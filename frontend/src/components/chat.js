@@ -12,6 +12,7 @@ class Chat extends Component {
         };
         this.goRoom = this.goRoom.bind(this);
         this.createRoom = this.createRoom.bind(this);
+        this.goChatbot = this.goChatbot.bind(this);
     }
 
     async goRoom() {
@@ -57,7 +58,9 @@ class Chat extends Component {
         });
         this.props.history.push(`/chat/${uriinfo.data.uri}/messages/`);
     }
-
+    goChatbot() {
+        this.props.history.push('/chatbot/');
+    }
     handleChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value,
@@ -67,7 +70,7 @@ class Chat extends Component {
     render() {
         return (
             <div className="container" >
-                <div className="card border-primary" style={{ flex: 2 }} >
+                <div className="card border-primary mb-3" style={{ maxWidth: "20rem" }} >
                     <h4 className="card-title">Enter a known Room ID </h4>
                     <input
                         type="text"
@@ -78,9 +81,13 @@ class Chat extends Component {
 
                     <button className="btn btn-primary" onClick={this.goRoom}>Open Room</button>
                 </div>
-                <div className="card border-primary" >
+                <div className="card border-primary mb-3" style={{ maxWidth: "20rem" }} >
                     <h4>Create Your Own Room </h4>
                     <button className="btn btn-primary" onClick={this.createRoom}>Create Room</button>
+                </div>
+                <div className="card border-primary mb-3" style={{ maxWidth: "20rem" }} >
+                    <h4>Go Chat with the bot</h4>
+                    <button className="btn btn-primary" onClick={this.goChatbot}>ChatBot</button>
                 </div>
             </div >
         );

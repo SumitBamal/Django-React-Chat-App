@@ -37,14 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'myapp.apps.MyappConfig',
     'rest_framework',
     'rest_framework.authtoken',
     'frontend',
     'chat.apps.ChatConfig',
     'corsheaders',
     'djoser',
-    'notifications',
 
 ]
 
@@ -87,11 +85,6 @@ REST_FRAMEWORK = {
     # 'DEFAULT_RENDERER_CLASSES': (
     #    'rest_framework.renderers.JSONRenderer',
     # )
-}
-DJOSER = {
-    'SERIALIZERS': {
-        'token': 'auth.serializers.StreamTokenSerializer',
-    }
 }
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
@@ -141,5 +134,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STREAM_API_KEY = "YOUR_STREAM_API_KEY"  # https://getstream.io/dashboard/
-STREAM_API_SECRET = "YOUR_STREAM_API_SECRET"

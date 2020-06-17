@@ -12,12 +12,12 @@ const Gologin = ({ component: Component, loading, ...rest }) => {
         ) : !isAuthed ? (
           <Component history={props.history} {...rest} />
         ) : (
-          <Redirect
-            to={{
-              pathname: "/",
-            }}
-          />
-        )
+              <Redirect
+                to={{
+                  pathname: "/",
+                }}
+              />
+            )
       }
     />
   );

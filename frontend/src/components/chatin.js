@@ -81,7 +81,7 @@ class Chatin extends Component {
                 <ol className="list list-group" style={{ flex: 1 }}>
                     {messages.map((m, ind) => this.renderMessage(m, ind))}
                 </ol>
-                <div className="Input">
+                <div className="input">
                     <input
                         onChange={(e) => this.handleChange(e)}
                         type="text"
@@ -89,7 +89,7 @@ class Chatin extends Component {
                         placeholder="Enter your message..."
 
                     />
-                    <button onClick={this.sendmessage}>Send</button>
+                    <button className="btn btn-primary" onClick={this.sendmessage}>Send</button>
 
                 </div>
             </div>

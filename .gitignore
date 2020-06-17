@@ -6,6 +6,8 @@
 *.log
 *.pot
 *.pyc
+*.zip
+*.tar
 __pycache__/
 local_settings.py
 db.sqlite3
@@ -30,6 +32,7 @@ build/
 develop-eggs/
 dist/
 downloads/
+cornell\ movie-dialogs\ corpus/
 eggs/
 .eggs/
 lib/

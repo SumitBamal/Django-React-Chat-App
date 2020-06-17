@@ -8,6 +8,23 @@ from .models import (
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions
+from chat.Chatbot import bot_response
+
+
+class ChatBotView(APIView):
+    # Only for Chatbot
+    # Fetch model then feed it req return resp
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        print('req data->>', request.data)
+        userinp = request.data['message']
+        botresp = bot_response(userinp)
+        return Response({
+            "user": {"username": "ani't no BOT"},
+            "message": botresp
+        })
 
 
 class ChatSessionView(APIView):
@@ -37,23 +54,23 @@ class ChatSessionView(APIView):
         chat_session = ChatSession.objects.get(uri=uri)
         owner = chat_session.owner
 
-        if owner != user:  # Only allow non owners join the room             
+        if owner != user:  # Only allow non owners join the room
             chat_session.members.get_or_create(
                 user=user, chat_session=chat_session
             )
 
         owner = deserialize_user(owner)
         members = [
-            deserialize_user(chat_session.user) 
+            deserialize_user(chat_session.user)
             for chat_session in chat_session.members.all()
         ]
         members.insert(0, owner)  # Make the owner the first member
-        return Response ({
+        return Response({
             'status': 'SUCCESS', 'members': members,
             'message': '%s joined that chat' % user.username,
             'user': deserialize_user(user)
         })
-    
+
 
 class ChatSessionMessageView(APIView):
     """Create/Get Chat session messages."""
@@ -65,8 +82,8 @@ class ChatSessionMessageView(APIView):
         uri = kwargs['uri']
 
         chat_session = ChatSession.objects.get(uri=uri)
-        messages = [chat_session_message.to_json() 
-            for chat_session_message in chat_session.messages.all()]
+        messages = [chat_session_message.to_json()
+                    for chat_session_message in chat_session.messages.all()]
 
         return Response({
             'id': chat_session.id, 'uri': chat_session.uri,
@@ -85,7 +102,7 @@ class ChatSessionMessageView(APIView):
             user=user, chat_session=chat_session, message=message
         )
 
-        return Response ({
+        return Response({
             'status': 'SUCCESS', 'uri': chat_session.uri, 'message': message,
             'user': deserialize_user(user)
         })

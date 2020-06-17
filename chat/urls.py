@@ -9,4 +9,5 @@ urlpatterns = [
     path('chat/', views.ChatSessionView.as_view()),
     path('chat/<uri>/', views.ChatSessionView.as_view()),
     path('chat/<uri>/messages/', views.ChatSessionMessageView.as_view()),
+    path('chatbot/', views.ChatBotView.as_view()),
 ]

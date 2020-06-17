@@ -7,6 +7,8 @@ import Login from "./login";
 import GoLogin from "./GoLogin";
 import Gochat from "./Gochat";
 import Gochatin from "./Gochatin";
+import ChatBot from "./ChatBot";
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -35,24 +37,35 @@ class App extends Component {
         });
       });
   }
+  logout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("uri");
+    this.props.history.push('/auth/login/');
+  }
   render() {
     return (
       <div className="">
         <nav className="navbar bg-primary">
           <h2 >Shitty Chat App</h2>
-          <button className="btn btn-secondary my-2 my-sm-0" type="submit">Logout</button>
+          {Boolean(localStorage.getItem("token")) &&
+            <button className="btn btn-secondary my-2 my-sm-0" onClick={this.logout}>Logout</button>
+          }
         </nav>
-        <div className="container">
+        <div id="container" style={{ height: "100vh" }}>
           <Router>
             <Switch>
               <GoLogin path="/auth/login/" component={Login} />
               <Gochatin path="/chat/:uri/messages/" component={Chatin} />
+              <Gochat path="/chatbot/" component={ChatBot} />
               <Gochat path="/" component={Chat} />
 
             </Switch>
           </Router>
 
         </div>
+        {/* <div className="fixed-bottom card border-success">
+          <a className="text-right" target="_blank" href="https://github.com/SumitBamal/Django-React-Chat-App">Github</a>
+        </div> */}
       </div>
     );
   }
