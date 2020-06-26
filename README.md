@@ -21,6 +21,9 @@ To compile:
 
 `$ python manage.py runserver`
 
+### Ver 0.3
+- Faster, Better looking
+
 ### Ver 0.2
 
 - Added Pytorch Chatbot
