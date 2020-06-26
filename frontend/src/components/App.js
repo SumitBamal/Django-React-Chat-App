@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import { render } from "react-dom";
 import Chat from "./chat";
 import Chatin from "./chatin";
@@ -8,6 +8,7 @@ import GoLogin from "./GoLogin";
 import Gochat from "./Gochat";
 import Gochatin from "./Gochatin";
 import ChatBot from "./ChatBot";
+import ReactLoading from "react-loading";
 
 class App extends Component {
   constructor(props) {
@@ -51,17 +52,20 @@ class App extends Component {
             <button className="btn btn-secondary my-2 my-sm-0" onClick={this.logout}>Logout</button>
           }
         </nav>
-        <div id="container" style={{ height: "100vh" }}>
-          <Router>
-            <Switch>
-              <GoLogin path="/auth/login/" component={Login} />
-              <Gochatin path="/chat/:uri/messages/" component={Chatin} />
-              <Gochat path="/chatbot/" component={ChatBot} />
-              <Gochat path="/" component={Chat} />
+        <div id="container" className="hv-center container" style={{ height: "100%" }}>
+          {!this.state.loaded ? (
+            <ReactLoading type={"bars"} color={"red"} />
+          ) : (
+              <Router>
+                <Switch>
+                  <GoLogin path="/auth/login/" component={Login} />
+                  <Gochatin path="/chat/:uri/messages/" component={Chatin} />
+                  <Gochat path="/chatbot/" component={ChatBot} />
+                  <Gochat path="/" component={Chat} exact={true} />
 
-            </Switch>
-          </Router>
-
+                </Switch>
+              </Router>
+            )}
         </div>
         {/* <div className="fixed-bottom card border-success">
           <a className="text-right" target="_blank" href="https://github.com/SumitBamal/Django-React-Chat-App">Github</a>

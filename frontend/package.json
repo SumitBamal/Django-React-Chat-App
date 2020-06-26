@@ -21,6 +21,7 @@
     "babel-loader": "^8.1.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-loading": "^2.0.3",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "webpack": "^4.43.0",

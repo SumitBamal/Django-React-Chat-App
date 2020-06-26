@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Axios from "axios";
-
+import Config from 'Config';
 class Chat extends Component {
     constructor(props) {
         super(props);
@@ -17,7 +17,7 @@ class Chat extends Component {
 
     async goRoom() {
         await this.setState({ loading: true });
-        const base = "http://localhost:8000";
+        const base = Config.serverUrl;
         const formData = new FormData();
         formData.set("username", localStorage.getItem("username"));
 
@@ -32,6 +32,8 @@ class Chat extends Component {
                 "Authorization": `Token ${localStorage.getItem("token")}`
             },
 
+        }).catch(function (error) {
+            alert('Error ' + error.message);
         });
         localStorage.setItem("uri", this.state.uri);
         await this.setState({
@@ -41,7 +43,7 @@ class Chat extends Component {
     }
     async createRoom() {
         await this.setState({ loading: true });
-        const base = "http://localhost:8000";
+        const base = Config.serverUrl;
 
         const uriinfo = await Axios({
             method: "POST",
@@ -49,6 +51,8 @@ class Chat extends Component {
             headers: {
                 "Authorization": `Token ${localStorage.getItem("token")}`
             },
+        }).catch(function (error) {
+            alert('Error ' + error.message);
         });
 
         localStorage.setItem("uri", uriinfo.data.uri);
@@ -70,24 +74,34 @@ class Chat extends Component {
     render() {
         return (
             <div className="container" >
-                <div className="card border-primary mb-3" style={{ maxWidth: "20rem" }} >
-                    <h4 className="card-title">Enter a known Room ID </h4>
-                    <input
-                        type="text"
-                        placeholder="id/URI"
-                        name="uri"
-                        onChange={(e) => this.handleChange(e)}
-                    />
+                <div className="flex-row" style={{ display: "flex", justifyContent: 'center' }}>
+                    <div className="card border-primary mb-3" style={{ maxWidth: "20rem" }} >
+                        <h4 className="modal-body">Enter a known Room ID </h4>
+                        <div className="modal-footer">
+                            <input
+                                type="text"
+                                placeholder="id/URI"
+                                name="uri"
+                                onChange={(e) => this.handleChange(e)}
+                            />
 
-                    <button className="btn btn-primary" onClick={this.goRoom}>Open Room</button>
+                            <button className="btn btn-primary" onClick={this.goRoom}>Open Room</button>
+                        </div>
+                    </div>
+                    <div className="card border-primary mb-3" style={{ maxWidth: "20rem" }} >
+                        <h4 className="modal-body">Create Your Own Room </h4>
+                        <div className="modal-footer">
+                            <button className="btn btn-primary" onClick={this.createRoom}>Create Room</button>
+                        </div>
+                    </div>
                 </div>
-                <div className="card border-primary mb-3" style={{ maxWidth: "20rem" }} >
-                    <h4>Create Your Own Room </h4>
-                    <button className="btn btn-primary" onClick={this.createRoom}>Create Room</button>
-                </div>
-                <div className="card border-primary mb-3" style={{ maxWidth: "20rem" }} >
-                    <h4>Go Chat with the bot</h4>
-                    <button className="btn btn-primary" onClick={this.goChatbot}>ChatBot</button>
+                <div className="flex-row" style={{ display: "flex", justifyContent: 'center' }}>
+                    <div className="card border-primary mb-3" style={{ maxWidth: "20rem" }} >
+                        <h4 className="modal-body">Go Chat with the bot</h4>
+                        <div className="modal-footer">
+                            <button className="btn btn-primary" onClick={this.goChatbot}>ChatBot</button>
+                        </div>
+                    </div>
                 </div>
             </div >
         );

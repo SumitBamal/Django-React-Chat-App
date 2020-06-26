@@ -24,6 +24,7 @@ import codecs
 from io import open
 import itertools
 import math
+from cachetools import cached, TTLCache
 
 
 USE_CUDA = torch.cuda.is_available()
@@ -773,9 +774,11 @@ if __name__ == "__main__":
                print_every, save_every, clip, corpus_name, loadFilename)
 
 # ______________________________________________________________
+cache = TTLCache(maxsize=100, ttl=10000)
 
 
-def bot_response(user_inp):
+@cached(cache)
+def bot_response_util():
     # Load vocab
     datafile = os.path.join(corpus, "formatted_movie_lines.txt")
     save_dir = os.path.join("data", "save")
@@ -819,6 +822,10 @@ def bot_response(user_inp):
 
     # Initialize search module
     searcher = GreedySearchDecoder(encoder, decoder)
+    return encoder, decoder, searcher, voc
 
+
+def bot_response(user_inp):
+    encoder, decoder, searcher, voc = bot_response_util()
     # Begin chatting (uncomment and run the following line to begin)
     return evaluateInput(encoder, decoder, searcher, voc, user_inp)

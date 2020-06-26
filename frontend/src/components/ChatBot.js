@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import Axios from "axios";
-
+import ReactLoading from "react-loading";
+import Config from 'Config';
 class ChatBot extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            messages: [{ "user": { "username": "Ani't No Bot" }, "message": "Hi, i am your dumb Bot!" }],
+            messages: [{ "user": { "username": "ani't no BOT" }, "message": "Hi, i am your dumb Bot!" }],
             mymsg: '',
             loading: false,
             username: localStorage.getItem("username")
@@ -17,18 +18,18 @@ class ChatBot extends Component {
         const currentMember = this.state.username;
         const messageFromMe = user.username === currentMember;
         const className = messageFromMe ?
-            "alert alert-secondary text-right" : "alert alert-secondary";
+            "table-active text-right" : "table-active";
         const classnameusr = messageFromMe ?
             "badge badge-info" : "badge badge-danger"
         return (
-            <li key={ind} className={className}>
+            <tr key={ind} className={className}>
                 <div className="Message-content" style={{ flex: 5 }}>
-                    <div className={classnameusr}>
+                    <span className={classnameusr}>
                         {user.username}
-                    </div>
-                    <div className="text">{message}</div>
+                    </span>
+                    <div className="">{message}</div>
                 </div>
-            </li>
+            </tr>
         );
     }
     //This method sends and recieves the msgs from bot 
@@ -36,7 +37,7 @@ class ChatBot extends Component {
         //add to messages
         await this.setState({ loading: true })
         this.state.messages.push({ "user": { "username": this.state.username }, "message": this.state.mymsg });
-        const base = "http://localhost:8000";
+        const base = Config.serverUrl;
         const resp = await Axios({
             method: "POST",
             url: `${base}/chatbot/`,
@@ -46,6 +47,8 @@ class ChatBot extends Component {
             headers: {
                 "Authorization": `Token ${localStorage.getItem("token")}`
             }
+        }).catch(function (error) {
+            alert('Error ' + error.message);
         });
         this.state.messages.push(resp.data);
         await this.setState({ loading: false })
@@ -58,20 +61,27 @@ class ChatBot extends Component {
         var messages = this.state.messages;
         return (
             <div className="container">
-                <h3>ChatBot</h3>
-                <ol className="list list-group" style={{ flex: 1 }}>
-                    {messages.map((m, ind) => this.renderMessage(m, ind))}
-                </ol>
-                <div className="input">
-                    <input
-                        onChange={(e) => this.handleChange(e)}
-                        type="text"
-                        name="mymsg"
-                        placeholder="Enter your message..."
+                <table className="table table-hover">
+                    <h3>ChatBot</h3>
+                    {this.state.loading &&
+                        <ReactLoading type={"bars"} color={"red"} />
+                    }
+                    <tbody className="list list-group" style={{ flex: 1 }}>
+                        {messages.map((m, ind) => this.renderMessage(m, ind))}
+                    </tbody>
+                    <div className="modal-footer">
+                        <div className="input">
+                            <input
+                                onChange={(e) => this.handleChange(e)}
+                                type="text"
+                                name="mymsg"
+                                placeholder="Enter your message..."
 
-                    />
-                    <button className="btn btn-primary" onClick={this.botmsg}>Send</button>
-                </div>
+                            />
+                            <button className="btn btn-primary" onClick={this.botmsg}>Send</button>
+                        </div>
+                    </div>
+                </table>
             </div>
         )
     }
