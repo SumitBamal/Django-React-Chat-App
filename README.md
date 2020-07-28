@@ -2,6 +2,8 @@
 
 React app on top of Django Rest Api with a Pytorch Chatbot
 
+#### Deployed at -> https://chatin-bot.herokuapp.com
+
 ## Installing dependencies
 
 `$ pip install -r requirements.txt`
